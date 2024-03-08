@@ -17,6 +17,22 @@ function Home() {
         setTasks(tasks);
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+                const updatedTasks = tasks.map(task => ({
+                    ...task,
+                    completed: task.tag !== 'general' ? false : task.completed
+                }));
+                setTasks(updatedTasks);
+                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [tasks]);
+
     function addTask(tag) {
         document.querySelector('#' + tag + ' .new-task-display').style.display = 'inline-flex';
         let inputNewTask = document.querySelector('#' + tag + ' .new-task-input')
@@ -38,6 +54,7 @@ function Home() {
                 time: '00:00',
                 tag: tag,
                 completed: false,
+                date: new Date()
             };
 
             const newTasks = !tasks ? [newTask] : [...tasks, newTask];
@@ -73,37 +90,38 @@ function Home() {
         setTasks(newTasks);
     }
 
-    function focus() {
-        document.getElementById("new-task-input").focus();
+    function handleCollapse(e) {
+        e.target.classList.toggle('active');
     }
-    
 
     return (
         <>
         <NavBar />
         <Outlet />
         <div className="home">
+            <p>{new Date().toLocaleDateString('pt-br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+
             {/* <button className="new-taskButton" onClick={focus}><i></i></button> */}
 
             <div id="general">
-                <h2 className="titleSection">Tarefas de Hoje</h2>
+                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}>Tarefas de Hoje</h2>
                 <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="morning">
-                <h2 className="titleSection">Manhã</h2>
+                <h2 className="titleSection morning" onClick={(e) => handleCollapse(e)}>Manhã</h2>
 
                 <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="afternoon">
-                <h2 className="titleSection">Tarde</h2>
+                <h2 className="titleSection afternoon" onClick={(e) => handleCollapse(e)}>Tarde</h2>
 
                 <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="night">
-                <h2 className="titleSection">Noite</h2>
+                <h2 className="titleSection night" onClick={(e) => handleCollapse(e)}>Noite</h2>
 
                 <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
