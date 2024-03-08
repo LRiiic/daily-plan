@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../../components/navBar";
 import TaskList from "../../components/taskList";
 import { useNavigate } from "react-router-dom";
+import { Droppable } from 'react-beautiful-dnd';
 import '../../App.css';
 import './style.css';
 
@@ -104,24 +105,24 @@ function Home() {
             {/* <button className="new-taskButton" onClick={focus}><i></i></button> */}
 
             <div id="general">
-                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}>Tarefas de Hoje</h2>
+                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}><i></i>Tarefas de Hoje</h2>
                 <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="morning">
-                <h2 className="titleSection morning" onClick={(e) => handleCollapse(e)}>Manhã</h2>
+                <h2 className="titleSection morning" onClick={(e) => handleCollapse(e)}><i></i>Manhã</h2>
 
                 <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="afternoon">
-                <h2 className="titleSection afternoon" onClick={(e) => handleCollapse(e)}>Tarde</h2>
+                <h2 className="titleSection afternoon" onClick={(e) => handleCollapse(e)}><i></i>Tarde</h2>
 
                 <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="night">
-                <h2 className="titleSection night" onClick={(e) => handleCollapse(e)}>Noite</h2>
+                <h2 className="titleSection night" onClick={(e) => handleCollapse(e)}><i></i>Noite</h2>
 
                 <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
