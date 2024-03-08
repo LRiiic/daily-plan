@@ -1,0 +1,139 @@
+.completed {
+    text-decoration: line-through;
+}
+
+.tasksList:empty {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.tasksList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    li {
+        display: inline-flex;
+        align-items: center;
+        list-style: none;
+        padding: 2px 0px;
+        margin: 0;
+        cursor: pointer;
+        @media screen and (min-width: 480px) {
+            &:hover {
+                .checkbox:not(.nt) {
+                    i {
+                        background-color: #ee2737;
+                        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>');
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: 70%;
+                        border-color: #ee2737;
+                        opacity: 0.5;
+                    }
+                }
+            }
+        }
+        .checkbox {
+            margin-right: 10px;
+            i {
+                width: 20px;
+                height: 20px;
+                display: block;
+                border: 1px solid #333;
+                border-radius: 20px;
+                box-sizing: border-box;
+            }
+            &.checked {
+                i {
+                    background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 70%;
+                    background-color: #ee2737;
+                    border-color: #ee2737;
+                }
+            }
+        }
+        
+        p {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+        }
+    }
+}
+
+.new-taskButton {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #ee2737;
+    border: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    i {
+        width: 50px;
+        height: 50px;
+        display: block;
+        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-fading-plus"><path d="M12 2a10 10 0 0 1 7.38 16.75"/><path d="M12 8v8"/><path d="M16 12H8"/><path d="M2.5 8.875a10 10 0 0 0-.5 3"/><path d="M2.83 16a10 10 0 0 0 2.43 3.4"/><path d="M4.636 5.235a10 10 0 0 1 .891-.857"/><path d="M8.644 21.42a10 10 0 0 0 7.631-.38"/></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.new-task {
+    width: 100%;
+    i {
+        width: 20px;
+        height: 20px;
+        background-color: #333;
+        border-radius: 20px;
+        margin-right: 10px;
+        display: block;
+        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
+  
+    }
+    &:hover {
+        p {
+            font-weight: bold;
+        }
+    }
+
+    p {
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -o-transition: all .3s;
+        transition: all .3s;
+        width: 100%;
+    }
+}
+
+.new-task-input {
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+    background: transparent;
+    border: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+    border-bottom: 1px solid transparent;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #333;
+        box-sizing: border-box;
+    }
+}
+
+li.new-task-display {
+    display: none;
+}
