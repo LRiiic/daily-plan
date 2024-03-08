@@ -48,7 +48,10 @@ function Home() {
         inputNewTask.addEventListener('focus', () => {});
     
         inputNewTask.addEventListener('blur', () => {
-            if (taskTitleTemp === '') return;
+            if (taskTitleTemp === '') {
+                document.querySelector('#' + tag + ' .new-task-display').style.display = '';
+                return;
+            }
             const newTask = {
                 id: Date.now(),
                 title: taskTitleTemp,
