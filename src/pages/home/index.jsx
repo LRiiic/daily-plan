@@ -66,6 +66,13 @@ function Home() {
         setTasks(newTasks);
     }
 
+    function removeTask(taskId) {
+        const newTasks = tasks.filter(t => t.id !== taskId);
+
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+        setTasks(newTasks);
+    }
+
     function focus() {
         document.getElementById("new-task-input").focus();
     }
@@ -80,25 +87,25 @@ function Home() {
 
             <div id="general">
                 <h2 className="titleSection">Tarefas de Hoje</h2>
-                <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask}/>
+                <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="morning">
                 <h2 className="titleSection">Manhã</h2>
 
-                <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask}/>
+                <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="afternoon">
                 <h2 className="titleSection">Tarde</h2>
 
-                <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask}/>
+                <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="night">
                 <h2 className="titleSection">Noite</h2>
 
-                <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask}/>
+                <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
         </div>
         </>
