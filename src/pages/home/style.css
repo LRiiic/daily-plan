@@ -79,7 +79,7 @@
             align-items: center;
             width: 100%;
             position: absolute;
-            background-color: red;
+            background-color: #ee2737;
             height: 28px;
             z-index: -2;
             right: calc(-100% - 5px);
@@ -121,7 +121,7 @@
                 }
             }
         }
-        
+
         p {
             margin: 0;
             padding: 0;

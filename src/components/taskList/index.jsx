@@ -23,7 +23,7 @@ function TaskList({ tag, tasks, addTask, taskTitle, setTaskTitle, completeTask, 
     
         e.target.style.transform = 'translateX(3*' + distance + 'px)';
 
-        if (distance < -20) {
+        if (distance < -50) {
             e.target.style.transform = 'translateX(-100%)';
             e.target.style.height = '0px';
             setTimeout(() => {
