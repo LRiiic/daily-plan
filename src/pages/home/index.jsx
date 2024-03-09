@@ -4,6 +4,7 @@ import NavBar from "../../components/navBar";
 import TaskList from "../../components/taskList";
 import { useNavigate } from "react-router-dom";
 import { Droppable } from 'react-beautiful-dnd';
+import { parse, format, subDays } from 'date-fns';
 import '../../App.css';
 import './style.css';
 
@@ -21,14 +22,13 @@ function Home() {
     useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date();
-            if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
-                const updatedTasks = tasks.map(task => ({
-                    ...task,
-                    completed: task.tag !== 'general' ? false : task.completed
-                }));
-                setTasks(updatedTasks);
-                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            }
+            const updatedTasks = tasks.map(task => ({
+                ...task,
+                date: parse(format(parse(task.date, 'dd/MM/yyyy', new Date()), 'dd/MM/yyyy'), 'dd/MM/yyyy', new Date()).getDate() !== now.getDate() && task.tag !== 'general' ? new Date().toLocaleDateString() : task.date,
+                completed: parse(format(parse(task.date, 'dd/MM/yyyy', new Date()), 'dd/MM/yyyy'), 'dd/MM/yyyy', new Date()).getDate() !== now.getDate() && task.tag !== 'general' ? false : task.completed
+            }));
+            setTasks(updatedTasks);
+            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -58,7 +58,7 @@ function Home() {
                 time: '00:00',
                 tag: tag,
                 completed: false,
-                date: new Date()
+                date: format(subDays(new Date(), 1), 'dd/MM/yyyy'),
             };
 
             const newTasks = !tasks ? [newTask] : [...tasks, newTask];

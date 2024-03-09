@@ -21,9 +21,9 @@ function TaskList({ tag, tasks, addTask, taskTitle, setTaskTitle, completeTask, 
 
         if (distance > 0) return;
     
-        e.target.style.transform = 'translateX(' + distance + 'px)';
+        e.target.style.transform = 'translateX(3*' + distance + 'px)';
 
-        if (distance < -200) {
+        if (distance < -20) {
             e.target.style.transform = 'translateX(-100%)';
             e.target.style.height = '0px';
             setTimeout(() => {
