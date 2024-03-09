@@ -45,6 +45,12 @@ function Home() {
             taskTitleTemp = e.target.value;
         });
 
+        inputNewTask.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                inputNewTask.blur();
+            }
+        })
+
         inputNewTask.addEventListener('focus', () => {});
     
         inputNewTask.addEventListener('blur', () => {
