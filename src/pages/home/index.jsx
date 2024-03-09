@@ -58,7 +58,7 @@ function Home() {
                 time: '00:00',
                 tag: tag,
                 completed: false,
-                date: format(subDays(new Date(), 1), 'dd/MM/yyyy'),
+                date: new Date().toLocaleDateString(),
             };
 
             const newTasks = !tasks ? [newTask] : [...tasks, newTask];
