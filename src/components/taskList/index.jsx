@@ -19,9 +19,11 @@ function TaskList({ tag, tasks, addTask, taskTitle, setTaskTitle, completeTask, 
         const distance = endX - startX.x;
 
         if (distance <= -80) {
+            e.target.classList.add('active');
             e.target.nextElementSibling.classList.add('active');
             return;
         } else {
+            e.target.classList.remove('active');
             e.target.nextElementSibling.classList.remove('active');
         }
     };
