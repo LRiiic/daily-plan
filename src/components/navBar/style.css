@@ -36,28 +36,151 @@ nav {
   font-size: 0.75rem;
 }
 
-.securityView {
+.helpBtn {
+  cursor: pointer;
   position: absolute;
   right: 0;
   padding: 0;
   background-color: transparent;
+  border-radius: 24px;
+  overflow: hidden;
+  i {
+    display: flex;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 24px;
+    width: 24px;
+    height: 24px;
+    background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>');
+  }
 }
 
-.securityView:active {
-  border-style: outset;
-}
-
-.securityView i {
+.helpContainer {
   display: flex;
-  position: relative;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  background-size: 24px;
-  width: 24px;
-  height: 24px;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiIHZpZXdCb3g9IjAsMCwyNTYsMjU2Ij48ZyBmaWxsPSIjMDAwMDAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48ZyB0cmFuc2Zvcm09InNjYWxlKDQsNCkiPjxwYXRoIGQ9Ik0zMiwxNGMtMTQuNTAyLDAgLTI3LDEyLjA3MyAtMjcsMThjMCw1LjkyNyAxMi40OTgsMTggMjcsMThjMTQuNTAyLDAgMjcsLTEyLjA3MyAyNywtMThjMCwtNS45MjcgLTEyLjQ5OCwtMTggLTI3LC0xOHpNMzIsMThjMTIuOTQzLDAgMjMsMTEuMTY3IDIzLDE0YzAsMi44MzMgLTEwLjA1NywxNCAtMjMsMTRjLTEyLjk0MywwIC0yMywtMTEuMTY3IC0yMywtMTRjMCwtMi44MzMgMTAuMDU3LC0xNCAyMywtMTR6TTMyLDIxYy02LjA3NSwwIC0xMSw0LjkyNSAtMTEsMTFjMCw2LjA3NSA0LjkyNSwxMSAxMSwxMWM2LjA3NSwwIDExLC00LjkyNSAxMSwtMTFjMCwtNi4wNzUgLTQuOTI1LC0xMSAtMTEsLTExek0zMiwyOGMyLjIwOSwwIDQsMS43OTEgNCw0YzAsMi4yMDkgLTEuNzkxLDQgLTQsNGMtMi4yMDksMCAtNCwtMS43OTEgLTQsLTRjMCwtMi4yMDkgMS43OTEsLTQgNCwtNHoiPjwvcGF0aD48L2c+PC9nPjwvc3ZnPg==');
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 999;
+  width: calc(100% - 20px);
+  height: max-content;
+  min-height: 60vh;
+  max-height: 80vh;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  box-shadow: 0px 10px 10px -10px rgba(0, 0, 0, 0.2);
+  overflow: auto;
+  padding: 0px 10px 10px;
+  flex-direction: column;
+  place-content: flex-start;
+  box-sizing: border-box;
+
+  h2 {
+    display: flex;
+    place-items: center;
+    place-content: center;
+
+    i {
+      display: flex;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: 24px;
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+      background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>');
+    }
+  }
+
+  h3 {
+    display: flex;
+    place-items: center;
+    font-size: 1.1rem;
+    margin: 0;
+    small {
+      font-size: 0.75rem;
+      margin-right: 5px;
+    }
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-top: 0;
+    text-align: justify;
+    line-height: 1.2rem;
+  }
+
+  .close {
+    cursor: pointer;
+    background-color: #ee2737;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-weight: 500;
+    text-transform: lowercase;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    box-sizing: border-box;
+  }
 }
 
-.securityView.active i {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiIHZpZXdCb3g9IjAsMCwyNTYsMjU2Ij48ZyBmaWxsPSIjMDAwMDAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48ZyB0cmFuc2Zvcm09InNjYWxlKDQsNCkiPjxwYXRoIGQ9Ik0xMywxMS4yNWMtMC40NDc3NSwtMC4wMDAxMyAtMC44OTQ4MywwLjE3MDIyIC0xLjIzNjMzLDAuNTExNzJjLTAuNjg0LDAuNjgzIC0wLjY4NCwxLjc5MTYxIDAsMi40NzQ2MWwzOCwzOGMwLjM0MSwwLjM0MiAwLjc4ODMzLDAuNTEzNjcgMS4yMzYzMywwLjUxMzY3YzAuNDQ4LDAgMC44OTUzMywtMC4xNzA3MiAxLjIzNjMzLC0wLjUxMTcyYzAuNjg0LC0wLjY4MyAwLjY4NCwtMS43OTE2MSAwLC0yLjQ3NDYxbC0zOCwtMzhjLTAuMzQxNSwtMC4zNDIgLTAuNzg4NTgsLTAuNTEzNTUgLTEuMjM2MzMsLTAuNTEzNjd6TTMyLDE0Yy0zLjM0LDAgLTYuNTgwMDgsMC42MzkyMiAtOS41ODAwOCwxLjY5OTIybDMuMTk5MjIsMy4yMDExN2MyLjAyLC0wLjU3IDQuMTYwODYsLTAuOTAwMzkgNi4zODA4NiwtMC45MDAzOWMxMi45NCwwIDIzLDExLjE3IDIzLDE0YzAsMS41MiAtMi44ODA3OCw1LjQyMDQ3IC03LjU1MDc4LDguNzMwNDdsMi45MTAxNiwyLjkxMDE2YzUuMjcsLTMuODMgOC42NDA2MywtOC41NjA2MyA4LjY0MDYzLC0xMS42NDA2MmMwLC01LjkzIC0xMi41LC0xOCAtMjcsLTE4ek0xMy42NDA2MywyMC4zNTkzOGMtNS4yNywzLjgzIC04LjY0MDYyLDguNTYwNjMgLTguNjQwNjIsMTEuNjQwNjNjMCw1LjkzIDEyLjUsMTggMjcsMThjMy4zNCwwIDYuNTgwMDgsLTAuNjM5MjIgOS41ODAwOCwtMS42OTkyMmwtMy4xOTkyMiwtMy4yMDExN2MtMi4wMiwwLjU3IC00LjE2MDg2LDAuOTAwMzkgLTYuMzgwODYsMC45MDAzOWMtMTIuOTQsMCAtMjMsLTExLjE3IC0yMywtMTRjMCwtMS41MiAyLjg4MDc4LC01LjQyMDQ3IDcuNTUwNzgsLTguNzMwNDd6TTMyLDIxYy0xLjI4LDAgLTIuNTEwMzksMC4yMjA4NiAtMy42NTAzOSwwLjYzMDg2bDE0LjAxOTUzLDE0LjAxOTUzYzAuNDEsLTEuMTQgMC42MzA4NiwtMi4zNzAzOSAwLjYzMDg2LC0zLjY1MDM5YzAsLTYuMDggLTQuOTIsLTExIC0xMSwtMTF6TTIxLjYzMDg2LDI4LjM0OTYxYy0wLjQxLDEuMTQgLTAuNjMwODYsMi4zNzAzOSAtMC42MzA4NiwzLjY1MDM5YzAsNi4wOCA0LjkyLDExIDExLDExYzEuMjgsMCAyLjUxMDM5LC0wLjIyMDg2IDMuNjUwMzksLTAuNjMwODZ6Ij48L3BhdGg+PC9nPjwvZz48L3N2Zz4=')!important;
+.importExport {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+
+  .message {
+    width: 100%;
+    text-align: center;
+  }
+
+  h4 {
+    width: 100%;
+    margin: 0;
+  }
+
+  input {
+    width: calc(100% - 43px);
+    border-radius: 5px;
+    height: 30px;
+    padding: 3px 5px;
+    box-sizing: border-box;
+    border: 1px solid #333;
+  }
+
+  .copyBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #ee2737;
+    border: none;
+    i {
+      display: flex;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: 100%;
+      width: 20px;
+      height: 20px;
+      background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-copy"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M16 4h2a2 2 0 0 1 2 2v4"/><path d="M21 14H11"/><path d="m15 10-4 4 4 4"/></svg>');
+    }
+  }
+
+  button {
+    width: calc(50% - 1.5px);
+    background-color: #FFFFFF;
+    color: #333;
+    border: 1px solid #333;
+  }
 }

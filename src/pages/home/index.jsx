@@ -4,7 +4,7 @@ import NavBar from "../../components/navBar";
 import TaskList from "../../components/taskList";
 import { useNavigate } from "react-router-dom";
 import { Droppable } from 'react-beautiful-dnd';
-import { parse, format, subDays } from 'date-fns';
+import { parse, format, subDays, set } from 'date-fns';
 import '../../App.css';
 import './style.css';
 
@@ -23,6 +23,10 @@ function Home() {
     const [nightTotal, setNightTotal] = useState(0);
     const [nightCompleted, setNightCompleted] = useState(0);
 
+    const [isIOS, setIsIOS] = useState(false);
+    const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [pwaFullScreen, setPwaFullScreen] = useState(null);
+
     useEffect(() => {
         const tasks = JSON.parse(localStorage.getItem('tasks'));
         setTasks(tasks);
@@ -40,48 +44,51 @@ function Home() {
             localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         }, 1000);
 
-        const totalTasks = tasks.filter(task => {
-            return task.tag !== 'general';
-        })
+        if (tasks) {
+            const totalTasks = tasks.filter(task => {
+                return task.tag !== 'general';
+            })
+    
+            setPoints(totalTasks.length*100);
+    
+            const totalCompleted = tasks.filter(task => {
+                return task.completed === true && task.tag !== 'general';
+            })
+    
+            setCurrentPoints(totalCompleted.length*100);
+    
+            const totalMorning = tasks.filter(task => {
+                return task.tag === 'morning';
+            });
+    
+            const totalMorningCompleted = tasks.filter(task => {
+                return task.tag === 'morning' && task.completed === true;
+            })
+    
+            setMorningTotal(totalMorning.length);
+            setMorningCompleted(totalMorningCompleted.length);
+    
+            const totalAfternoon = tasks.filter(task => {
+                return task.tag === 'afternoon';
+            });
+    
+            const totalAfternoonCompleted = tasks.filter(task => {
+                return task.tag === 'afternoon' && task.completed === true;
+            })
+            setAfternoonTotal(totalAfternoon.length);
+            setAfternoonCompleted(totalAfternoonCompleted.length);
+    
+            const totalNight = tasks.filter(task => {
+                return task.tag === 'night';
+            });
+    
+            const totalNightCompleted = tasks.filter(task => {
+                return task.tag === 'night' && task.completed === true;
+            })
+            setNightTotal(totalNight.length);
+            setNightCompleted(totalNightCompleted.length);
+        }
 
-        setPoints(totalTasks.length*100);
-
-        const totalCompleted = tasks.filter(task => {
-            return task.completed === true && task.tag !== 'general';
-        })
-
-        setCurrentPoints(totalCompleted.length*100);
-
-        const totalMorning = tasks.filter(task => {
-            return task.tag === 'morning';
-        });
-
-        const totalMorningCompleted = tasks.filter(task => {
-            return task.tag === 'morning' && task.completed === true;
-        })
-
-        setMorningTotal(totalMorning.length);
-        setMorningCompleted(totalMorningCompleted.length);
-
-        const totalAfternoon = tasks.filter(task => {
-            return task.tag === 'afternoon';
-        });
-
-        const totalAfternoonCompleted = tasks.filter(task => {
-            return task.tag === 'afternoon' && task.completed === true;
-        })
-        setAfternoonTotal(totalAfternoon.length);
-        setAfternoonCompleted(totalAfternoonCompleted.length);
-
-        const totalNight = tasks.filter(task => {
-            return task.tag === 'night';
-        });
-
-        const totalNightCompleted = tasks.filter(task => {
-            return task.tag === 'night' && task.completed === true;
-        })
-        setNightTotal(totalNight.length);
-        setNightCompleted(totalNightCompleted.length);
 
         return () => clearInterval(interval);
     }, [tasks]);
@@ -156,11 +163,60 @@ function Home() {
         e.target.classList.toggle('active');
     }
 
+    useEffect(() => {
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          setPwaFullScreen(true);
+        } else {
+          setPwaFullScreen(false);
+        }
+    
+        const userAgent = window.navigator.userAgent;
+        setIsIOS(/iPad|iPhone|iPod/.test(userAgent));
+    
+        const handleBeforeInstallPrompt = (event) => {
+          // Salvar o evento para poder chamar prompt() posteriormente
+          setDeferredPrompt(event);
+        };
+    
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    
+        return () => {
+          window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
+      }, []);
+    
+      const handleInstallClick = () => {
+        if (isIOS) {
+          showIOSInstructions();
+        } else {
+          deferredPrompt.prompt();
+    
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('O usuário aceitou instalar o PWA');
+            } else {
+              console.log('O usuário cancelou a instalação do PWA');
+            }
+    
+            setDeferredPrompt(null);
+          });
+        }
+      };
+    
+    
+      const showIOSInstructions = () => {
+        const instructions = 'No iOS, toque no ícone de compartilhamento e selecione "Adicionar à Tela de Início" para instalar este aplicativo.';
+        alert(instructions);
+      };
+
     return (
         <>
-        <NavBar />
+        <NavBar setTasks={setTasks}/>
         <Outlet />
         <div className="home">
+            <button id="install-button" style={{ display: pwaFullScreen ? 'none' : isIOS ? 'flex' : (deferredPrompt ? 'flex' : 'none') }} onClick={handleInstallClick}>
+            <i></i>Adicionar à tela inicial
+            </button>
             <p>{new Date().toLocaleDateString('pt-br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
             <div className="points">
@@ -174,7 +230,7 @@ function Home() {
             {/* <button className="new-taskButton" onClick={focus}><i></i></button> */}
 
             <div id="general">
-                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}><i></i>Tarefas de Hoje</h2>
+                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}><i></i>Tarefas gerais</h2>
                 <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
