@@ -13,6 +13,15 @@ function Home() {
 
     const [tasks, setTasks] = useState([]);
     const [taskTitle, setTaskTitle] = useState('');
+    const [points, setPoints] = useState(0);
+    const [currentPoints, setCurrentPoints] = useState(0);
+
+    const [morningTotal, setMorningTotal] = useState(0);
+    const [morningCompleted, setMorningCompleted] = useState(0);
+    const [afternoonTotal, setAfternoonTotal] = useState(0);
+    const [afternoonCompleted, setAfternoonCompleted] = useState(0);
+    const [nightTotal, setNightTotal] = useState(0);
+    const [nightCompleted, setNightCompleted] = useState(0);
 
     useEffect(() => {
         const tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -30,6 +39,49 @@ function Home() {
             setTasks(updatedTasks);
             localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         }, 1000);
+
+        const totalTasks = tasks.filter(task => {
+            return task.tag !== 'general';
+        })
+
+        setPoints(totalTasks.length*100);
+
+        const totalCompleted = tasks.filter(task => {
+            return task.completed === true && task.tag !== 'general';
+        })
+
+        setCurrentPoints(totalCompleted.length*100);
+
+        const totalMorning = tasks.filter(task => {
+            return task.tag === 'morning';
+        });
+
+        const totalMorningCompleted = tasks.filter(task => {
+            return task.tag === 'morning' && task.completed === true;
+        })
+
+        setMorningTotal(totalMorning.length);
+        setMorningCompleted(totalMorningCompleted.length);
+
+        const totalAfternoon = tasks.filter(task => {
+            return task.tag === 'afternoon';
+        });
+
+        const totalAfternoonCompleted = tasks.filter(task => {
+            return task.tag === 'afternoon' && task.completed === true;
+        })
+        setAfternoonTotal(totalAfternoon.length);
+        setAfternoonCompleted(totalAfternoonCompleted.length);
+
+        const totalNight = tasks.filter(task => {
+            return task.tag === 'night';
+        });
+
+        const totalNightCompleted = tasks.filter(task => {
+            return task.tag === 'night' && task.completed === true;
+        })
+        setNightTotal(totalNight.length);
+        setNightCompleted(totalNightCompleted.length);
 
         return () => clearInterval(interval);
     }, [tasks]);
@@ -111,6 +163,14 @@ function Home() {
         <div className="home">
             <p>{new Date().toLocaleDateString('pt-br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
+            <div className="points">
+                <p>Progresso</p>
+                <div className="progress">
+                    <i></i>
+                    <span>{currentPoints}/{points}</span>
+                    <div className={currentPoints >= points ? 'progress-bar complete' : 'progress-bar'} style={{width: `${currentPoints/points*100}%`}}></div>
+                </div>
+            </div>
             {/* <button className="new-taskButton" onClick={focus}><i></i></button> */}
 
             <div id="general">
@@ -119,19 +179,19 @@ function Home() {
             </div>
 
             <div id="morning">
-                <h2 className="titleSection morning" onClick={(e) => handleCollapse(e)}><i></i>Manhã</h2>
+                <h2 className={morningCompleted === morningTotal ? 'titleSection morning active' : 'titleSection morning'} onClick={(e) => handleCollapse(e)}><i></i>Manhã <small>{morningCompleted}/{morningTotal}</small></h2>
 
                 <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="afternoon">
-                <h2 className="titleSection afternoon" onClick={(e) => handleCollapse(e)}><i></i>Tarde</h2>
+                <h2 className={afternoonCompleted === afternoonTotal ? 'titleSection afternoon active' : 'titleSection afternoon'} onClick={(e) => handleCollapse(e)}><i></i>Tarde <small>{afternoonCompleted}/{afternoonTotal}</small></h2>
 
                 <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="night">
-                <h2 className="titleSection night" onClick={(e) => handleCollapse(e)}><i></i>Noite</h2>
+                <h2 className={nightCompleted === nightTotal ? 'titleSection night active' : 'titleSection night'} onClick={(e) => handleCollapse(e)}><i></i>Noite <small>{nightCompleted}/{nightTotal}</small></h2>
 
                 <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
