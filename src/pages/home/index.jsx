@@ -179,19 +179,19 @@ function Home() {
             </div>
 
             <div id="morning">
-                <h2 className={morningCompleted === morningTotal ? 'titleSection morning active' : 'titleSection morning'} onClick={(e) => handleCollapse(e)}><i></i>Manhã <small>{morningCompleted}/{morningTotal}</small></h2>
+                <h2 className={morningCompleted === morningTotal && morningTotal !== 0  ? 'titleSection morning active' : 'titleSection morning'} onClick={(e) => handleCollapse(e)}><i></i>Manhã <small>{morningCompleted}/{morningTotal}</small></h2>
 
                 <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="afternoon">
-                <h2 className={afternoonCompleted === afternoonTotal ? 'titleSection afternoon active' : 'titleSection afternoon'} onClick={(e) => handleCollapse(e)}><i></i>Tarde <small>{afternoonCompleted}/{afternoonTotal}</small></h2>
+                <h2 className={afternoonCompleted === afternoonTotal && afternoonTotal !== 0 ? 'titleSection afternoon active' : 'titleSection afternoon'} onClick={(e) => handleCollapse(e)}><i></i>Tarde <small>{afternoonCompleted}/{afternoonTotal}</small></h2>
 
                 <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
 
             <div id="night">
-                <h2 className={nightCompleted === nightTotal ? 'titleSection night active' : 'titleSection night'} onClick={(e) => handleCollapse(e)}><i></i>Noite <small>{nightCompleted}/{nightTotal}</small></h2>
+                <h2 className={nightCompleted === nightTotal && nightTotal !== 0 ? 'titleSection night active' : 'titleSection night'} onClick={(e) => handleCollapse(e)}><i></i>Noite <small>{nightCompleted}/{nightTotal}</small></h2>
 
                 <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
             </div>
