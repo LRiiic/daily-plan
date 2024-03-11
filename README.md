@@ -1,6 +1,3 @@
 # daily-plan
 
-## Commands
-npm install
-
-npm run dev
+Routine Manager web application.
