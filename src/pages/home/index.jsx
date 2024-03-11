@@ -93,48 +93,38 @@ function Home() {
         return () => clearInterval(interval);
     }, [tasks]);
 
-    function addTask(tag) {
+    function keydown(e, tag) {
+        if (e.key === 'Enter') {
+            createTask(tag);
+        }
+    }
+
+    function createTask(tag) {
+        if (taskTitle === '') {
+            document.querySelector('#' + tag + ' .new-task-display').style.display = '';
+            return;
+        }
+        const newTask = {
+            id: Date.now(),
+            title: taskTitle,
+            time: '00:00',
+            tag: tag,
+            completed: false,
+            date: new Date().toLocaleDateString(),
+        };
+
+        const newTasks = !tasks ? [newTask] : [...tasks, newTask];
+
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+        setTasks(newTasks);
+        setTaskTitle('');
+        document.querySelector('#' + tag + ' .new-task-display').style.display = '';
+    }
+
+    function handleNewTask(tag) {
         document.querySelector('#' + tag + ' .new-task-display').style.display = 'inline-flex';
         let inputNewTask = document.querySelector('#' + tag + ' .new-task-input')
         inputNewTask.focus();
-
-        let taskTitleTemp = '';
-
-        inputNewTask.addEventListener('change', (e) => {
-            taskTitleTemp = e.target.value;
-        });
-
-        inputNewTask.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                inputNewTask.blur();
-            }
-        })
-
-        inputNewTask.addEventListener('focus', () => {});
-    
-        inputNewTask.addEventListener('blur', () => {
-            if (taskTitleTemp === '') {
-                document.querySelector('#' + tag + ' .new-task-display').style.display = '';
-                return;
-            }
-            const newTask = {
-                id: Date.now(),
-                title: taskTitleTemp,
-                time: '00:00',
-                tag: tag,
-                completed: false,
-                date: new Date().toLocaleDateString(),
-            };
-
-            const newTasks = !tasks ? [newTask] : [...tasks, newTask];
-
-            localStorage.setItem('tasks', JSON.stringify(newTasks));
-            setTasks(newTasks);
-            setTaskTitle('');
-            document.querySelector('#' + tag + ' .new-task-display').style.display = '';
-
-        });
-        return;
     }
 
     function completeTask(task) {
@@ -174,7 +164,6 @@ function Home() {
         setIsIOS(/iPad|iPhone|iPod/.test(userAgent));
     
         const handleBeforeInstallPrompt = (event) => {
-          // Salvar o evento para poder chamar prompt() posteriormente
           setDeferredPrompt(event);
         };
     
@@ -183,39 +172,50 @@ function Home() {
         return () => {
           window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
-      }, []);
+    }, []);
     
-      const handleInstallClick = () => {
+    const handleInstallClick = () => {
         if (isIOS) {
-          showIOSInstructions();
+            showIOSInstructions();
         } else {
-          deferredPrompt.prompt();
-    
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('O usuário aceitou instalar o PWA');
-            } else {
-              console.log('O usuário cancelou a instalação do PWA');
-            }
-    
-            setDeferredPrompt(null);
-          });
+            deferredPrompt.prompt();
+
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('O usuário aceitou instalar o PWA');
+                } else {
+                    console.log('O usuário cancelou a instalação do PWA');
+                }
+                setDeferredPrompt(null);
+            });
         }
-      };
+    };
     
     
-      const showIOSInstructions = () => {
+    const showIOSInstructions = () => {
         const instructions = 'No iOS, toque no ícone de compartilhamento e selecione "Adicionar à Tela de Início" para instalar este aplicativo.';
         alert(instructions);
-      };
+    };
+
+    const params = {
+        tasks: tasks,
+        handleNewTask: handleNewTask,
+        createTask: createTask,
+        keydown: keydown,
+        taskTitle: taskTitle,
+        setTaskTitle: setTaskTitle,
+        completeTask: completeTask,
+        removeTask: removeTask
+    };
 
     return (
         <>
         <NavBar setTasks={setTasks}/>
         <Outlet />
         <div className="home">
-            <button id="install-button" style={{ display: pwaFullScreen ? 'none' : isIOS ? 'flex' : (deferredPrompt ? 'flex' : 'none') }} onClick={handleInstallClick}>
-            <i></i>Adicionar à tela inicial
+            <button id="install-button" style={{ display: pwaFullScreen ? 'none' : isIOS ? 'flex' : (deferredPrompt ? 'flex' : 'none') }}
+                onClick={handleInstallClick}>
+                <i></i>Adicionar à tela inicial
             </button>
             <p>{new Date().toLocaleDateString('pt-br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
@@ -227,29 +227,41 @@ function Home() {
                     <div className={currentPoints >= points ? 'progress-bar complete' : 'progress-bar'} style={{width: `${currentPoints/points*100}%`}}></div>
                 </div>
             </div>
-            {/* <button className="new-taskButton" onClick={focus}><i></i></button> */}
 
             <div id="general">
-                <h2 className="titleSection general" onClick={(e) => handleCollapse(e)}><i></i>Tarefas gerais</h2>
-                <TaskList tag="general" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
+                <h2 className="titleSection general"
+                    onClick={(e) => handleCollapse(e)}>
+                    <i></i>Tarefas gerais
+                </h2>
+
+                <TaskList tag="general" {...params}/>
             </div>
 
             <div id="morning">
-                <h2 className={morningCompleted === morningTotal && morningTotal !== 0  ? 'titleSection morning active' : 'titleSection morning'} onClick={(e) => handleCollapse(e)}><i></i>Manhã <small>{morningCompleted}/{morningTotal}</small></h2>
+                <h2 className={morningCompleted === morningTotal && morningTotal !== 0  ? 'titleSection morning active' : 'titleSection morning'} 
+                    onClick={(e) => handleCollapse(e)}>
+                    <i></i>Manhã <small>{morningCompleted}/{morningTotal}</small>
+                </h2>
 
-                <TaskList tag="morning" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
+                <TaskList tag="morning" {...params}/>
             </div>
 
             <div id="afternoon">
-                <h2 className={afternoonCompleted === afternoonTotal && afternoonTotal !== 0 ? 'titleSection afternoon active' : 'titleSection afternoon'} onClick={(e) => handleCollapse(e)}><i></i>Tarde <small>{afternoonCompleted}/{afternoonTotal}</small></h2>
+                <h2 className={afternoonCompleted === afternoonTotal && afternoonTotal !== 0 ? 'titleSection afternoon active' : 'titleSection afternoon'}
+                    onClick={(e) => handleCollapse(e)}>
+                    <i></i>Tarde <small>{afternoonCompleted}/{afternoonTotal}</small>
+                </h2>
 
-                <TaskList tag="afternoon" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
+                <TaskList tag="afternoon" {...params}/>
             </div>
 
             <div id="night">
-                <h2 className={nightCompleted === nightTotal && nightTotal !== 0 ? 'titleSection night active' : 'titleSection night'} onClick={(e) => handleCollapse(e)}><i></i>Noite <small>{nightCompleted}/{nightTotal}</small></h2>
+                <h2 className={nightCompleted === nightTotal && nightTotal !== 0 ? 'titleSection night active' : 'titleSection night'}
+                    onClick={(e) => handleCollapse(e)}>
+                    <i></i>Noite <small>{nightCompleted}/{nightTotal}</small>
+                </h2>
 
-                <TaskList tag="night" tasks={tasks} addTask={addTask} taskTitle={taskTitle} setTaskTitle={setTaskTitle} completeTask={completeTask} removeTask={removeTask}/>
+                <TaskList tag="night" {...params}/>
             </div>
         </div>
         </>

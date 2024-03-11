@@ -1,6 +1,6 @@
 import { React, useEffect, useState, useRef } from "react";
 
-function TaskList({ tag, tasks, addTask, taskTitle, setTaskTitle, completeTask, removeTask }) {
+function TaskList({ tag, tasks, handleNewTask, taskTitle, setTaskTitle, completeTask, removeTask, createTask, keydown }) {
     const [startX, setStartX] = useState(0);
 
     const handleStart = (e, taskId) => {
@@ -55,9 +55,11 @@ function TaskList({ tag, tasks, addTask, taskTitle, setTaskTitle, completeTask, 
                     className="new-task-input"
                     value={taskTitle}
                     onChange={(e) => setTaskTitle(e.target.value)}
+                    onKeyDown={(e) => keydown(e, tag)}
+                    onBlur={(e) => createTask(tag)}
                 />
             </li>
-            <li className='new-task' onClick={() => addTask(tag)}>
+            <li className='new-task' onClick={() => handleNewTask(tag)}>
                 <span><i></i></span>
                 <p>Nova tarefa...</p>
             </li>
