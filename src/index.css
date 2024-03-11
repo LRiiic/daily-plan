@@ -25,6 +25,18 @@ body,
   scrollbar-width: 8px;
 }
 
+:root {
+  --background-color-light: #ffe6bc;
+  --text-color-light: #333333;
+  --background-color-dark: #333333;
+  --text-color-dark: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 *::selection,
 p::selection {
   background-color: #ee2737;
@@ -123,15 +135,31 @@ button:hover {
   border-color: #ee2737;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --background-color: var(--background-color-dark);
+    --text-color: var(--text-color-dark);
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+}
+
+.dark-theme {
+  @media (prefers-color-scheme: dark) {
+    .titleSection {
+      &::before {
+        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up"><path d="m18 15-6-6-6 6"/></svg>');
+      }
+    
+      &::after {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .titleSection {
+      &.active {
+        &::before {
+          background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>');
+        }
+      }
+    }
   }
 }

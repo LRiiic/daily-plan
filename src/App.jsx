@@ -1,10 +1,7 @@
-import { useState } from 'react'
-import DailyPlanLogo from '/dailyplan-logo.svg'
-import NavBar from './components/navBar'
+import ThemeManager from './components/themeManager'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/home'
 import NotFound from './pages/notFound'
-import FormTask from './pages/formTask'
 
 function App() {
 
@@ -12,22 +9,17 @@ function App() {
     {
       path: "/",
       element: <Home />,
-
-      children: [
-        {
-          path: "/new-task",
-          element: <FormTask />
-        },
-        {
-          path: "/edit-task/:id",
-          element: <FormTask />
-        },
-      ],
     },
     { path: "*", element: <NotFound /> }
   ]);
 
-  return <div className='mainContainer'><RouterProvider router={router} /></div>
+  return (
+    <div className='mainContainer'>
+      <ThemeManager>
+        <RouterProvider router={router} />
+      </ThemeManager>
+    </div>
+  );
 }
 
 export default App

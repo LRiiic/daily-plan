@@ -1,6 +1,4 @@
 import { React } from "react";
-import { Outlet } from "react-router-dom";
-import NavBar from "../../components/navBar";
 import { useNavigate } from "react-router-dom";
 
 function NotFound() {
@@ -8,6 +6,7 @@ function NotFound() {
     return (
         <div className="mainContainer">
             <h1>Página não encontrada</h1>
+            <button style={{ backgroundColor: "#ee2737", color: "#FFFFFF" }} onClick={() => navigate('/')}>Voltar</button>
         </div>
     );
 }
