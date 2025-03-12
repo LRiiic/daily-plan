@@ -33,24 +33,24 @@
   /* Modo claro (padrão) */
   --background-color: var(--background-light);
   --text-color: var(--text-light);
-  --card-bg: `#FFFFFF`;
-  --border-color: `#E0E0E0`;
-  --checkbox-bg: `#FFFFFF`;
-  --checkbox-border: `#BDBDBD`;
-  --task-hover: `#F5F5F5`;
-  --progress-bg: `#E0E0E0`;
+  --card-bg: #FFFFFF;
+  --border-color: #E0E0E0;
+  --checkbox-bg: #FFFFFF;
+  --checkbox-border: #BDBDBD;
+  --task-hover: #F5F5F5;
+  --progress-bg: #E0E0E0;
 }
 
 /* Modo escuro */
 .dark-theme {
   --background-color: var(--background-dark);
   --text-color: var(--text-dark);
-  --card-bg: `#2A2A3A`;
-  --border-color: `#414151`;
-  --checkbox-bg: `#343444`;
-  --checkbox-border: `#4B4B5A`;
-  --task-hover: `#2F2F3F`;
-  --progress-bg: `#37383E`;
+  --card-bg: #2A2A3A;
+  --border-color: #414151;
+  --checkbox-bg: #343444;
+  --checkbox-border: #4B4B5A;
+  --task-hover: #2F2F3F;
+  --progress-bg: #37383E;
 }
 
 /* Estilos gerais */
@@ -253,6 +253,9 @@ body {
   cursor: pointer;
   transition: var(--transition);
   border-bottom: 1px solid var(--border-color);
+  &.collapsed {
+    border-color: transparent;
+  }
 }
 
 .section-icon {
