@@ -5,3 +5,15 @@
   padding: 0;
   text-align: center;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+.mainContainer {
+  position: relative;
+}
+
+.scroll {
+  overflow: hidden;
+}

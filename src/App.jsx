@@ -15,9 +15,7 @@ function App() {
 
   return (
     <div className='mainContainer'>
-      <ThemeManager>
         <RouterProvider router={router} />
-      </ThemeManager>
     </div>
   );
 }

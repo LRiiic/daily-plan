@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -13,9 +12,10 @@ export default defineConfig({
         name: 'Daily Plan',
         short_name: 'Daily Plan',
         description: "Personal daily app",
-        background_color: '#ffe6bc',
-        theme_color: '#ffe6bc',
+        background_color: '#F8F9FA',
+        theme_color: '#F8F9FA',
         orientation: "portrait-primary",
+        // Cores padrão (tema claro)
         icons: [
           {
             src: '/pwa-192x192.png',
@@ -29,6 +29,14 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+        // Configuração para tema escuro (ainda experimental)
+        theme_variations: [
+          {
+            media: '(prefers-color-scheme: dark)',
+            theme_color: '#1E1E2E',
+            background_color: '#1E1E2E'
+          }
+        ]
       },
     }),
   ],

@@ -10,10 +10,18 @@ nav {
   }
 }
 
+.theme-container {
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+  padding: 0;
+  background-color: transparent;
+}
+
 .helpBtn {
   cursor: pointer;
   position: absolute;
-  right: 0;
+  right: 10px;
   padding: 0;
   background-color: transparent;
   border-radius: 24px;
@@ -32,20 +40,19 @@ nav {
 
 .helpContainer {
   display: flex;
-  background-color: #FFFFFF;
   border-radius: 8px;
   position: absolute;
   z-index: 999;
   width: calc(100% - 20px);
-  height: max-content;
-  min-height: 60vh;
-  max-height: 90vh;
+  height: auto;
+  min-height: 10vh;
   left: 0;
   right: 0;
-  top: 0;
+  top: 20px;
   bottom: 0;
   margin: 20px auto;
   box-shadow: 0px 10px 10px -10px rgba(0, 0, 0, 0.2);
+  background-color: var(--background-color);
   overflow: auto;
   padding: 0px 10px 10px;
   flex-direction: column;
@@ -156,6 +163,8 @@ nav {
     background-color: #FFFFFF;
     color: #333;
     border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
   }
 }
 
@@ -163,7 +172,7 @@ nav {
   @media (prefers-color-scheme: dark) {
     .helpBtn {
       i {
-        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>');
+        background-image: url('data:image/svg+xml;svg,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>')!important;
       }
     }
 

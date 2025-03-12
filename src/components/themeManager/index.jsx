@@ -2,74 +2,56 @@ import React, { useEffect, useState } from 'react';
 
 const ThemeManager = ({ children }) => {
   // Estado para controlar o modo escuro
-  const [darkMode, setDarkMode] = useState(false);
+  // Verifica se há uma preferência salva no localStorage, caso contrário, usa light como padrão
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
 
-  // Efeito para verificar a preferência inicial do sistema
+  // Efeito para aplicar o tema inicial
   useEffect(() => {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(prefersDarkMode);
-    
-    // Aplicar a classe diretamente ao elemento document.body
-    if (prefersDarkMode) {
+    // Aplicar o tema com base no estado atual
+    if (darkMode) {
       document.body.classList.add('dark-theme');
       document.body.classList.remove('light-theme');
     } else {
       document.body.classList.add('light-theme');
       document.body.classList.remove('dark-theme');
     }
-  }, []);
+  }, [darkMode]);
 
-  // Efeito para detectar mudanças na preferência do sistema
-  useEffect(() => {
-    const updateTheme = (e) => {
-      setDarkMode(e.matches);
-      
-      // Atualizar classes no body quando a preferência do sistema mudar
-      if (e.matches) {
-        document.body.classList.add('dark-theme');
-        document.body.classList.remove('light-theme');
-      } else {
-        document.body.classList.add('light-theme');
-        document.body.classList.remove('dark-theme');
-      }
-    };
-    
-    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Usar o método de evento correto dependendo do navegador
-    if (darkModeQuery.addEventListener) {
-      darkModeQuery.addEventListener('change', updateTheme);
-      return () => darkModeQuery.removeEventListener('change', updateTheme);
-    } else {
-      // Fallback para navegadores mais antigos
-      darkModeQuery.addListener(updateTheme);
-      return () => darkModeQuery.removeListener(updateTheme);
-    }
-  }, []);
-
-  // Função para alternar o tema manualmente (pode ser exposta via contexto)
+  // Função para alternar o tema manualmente
   const toggleTheme = () => {
     setDarkMode(prevMode => {
       const newMode = !prevMode;
       
-      if (newMode) {
-        document.body.classList.add('dark-theme');
-        document.body.classList.remove('light-theme');
-      } else {
-        document.body.classList.add('light-theme');
-        document.body.classList.remove('dark-theme');
-      }
+      // Salvar a preferência no localStorage
+      localStorage.setItem('theme', newMode ? 'dark' : 'light');
       
       return newMode;
     });
   };
 
+  // Em seu componente principal ou ThemeProvider
+  useEffect(() => {
+    // Seleciona a meta tag theme-color ou cria uma se não existir
+    let metaThemeColor = document.querySelector("meta[name='theme-color']");
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement('meta');
+      metaThemeColor.name = 'theme-color';
+      document.head.appendChild(metaThemeColor);
+    }
+    
+    // Atualiza a cor com base no tema atual
+    metaThemeColor.content = darkMode ? '#1E1E2E' : '#F8F9FA';
+  }, [darkMode]);
+
   return (
     <div className={darkMode ? 'theme-container dark-theme' : 'theme-container light-theme'}>
-      {/* Opcionalmente adicionar um botão para alternar o tema */}
-      {/* <button className="theme-toggle" onClick={toggleTheme}>
+      {/* Botão para alternar o tema */}
+      <button className="theme-toggle" onClick={toggleTheme}>
         {darkMode ? '☀️' : '🌙'}
-      </button> */}
+      </button>
       {children}
     </div>
   );

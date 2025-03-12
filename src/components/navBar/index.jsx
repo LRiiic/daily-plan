@@ -1,5 +1,6 @@
 import { React } from "react";
 import DailyPlanLogo from '/dailyplan-logo.svg'
+import ThemeManager from '../../components/themeManager'
 import '../../index.css';
 import './style.css';
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ function NavBar({ setTasks }) {
 
   function toggleHelp() {
     setShowHelp(!showHelp);
+    document.body.classList.toggle('scroll');
   }
 
   function exportData() {
@@ -40,6 +42,7 @@ function NavBar({ setTasks }) {
   return (
     <>
       <nav>
+        <ThemeManager/>
         <img src={DailyPlanLogo} alt="Daily Plan Logo" width="50%"/>
 
         <span className="helpBtn" onClick={toggleHelp}><i></i></span>
