@@ -8,9 +8,7 @@ function TaskList({ tag, tasks, handleNewTask, taskTitle, setTaskTitle, complete
                 .map(task => (
                     <div className="task" key={task.id}>
                         <li onClick={() => completeTask(task)}>
-                            <span className={task.completed ? 'checkbox checked' : 'checkbox'}>
-                                <i></i>
-                            </span>
+                            <span className={task.completed ? 'checkbox checked' : 'checkbox'}></span>
                             <p className={task.completed ? 'completed' : ''}>
                                 {task.title}
                             </p>

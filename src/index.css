@@ -399,7 +399,7 @@ body {
   border-color: var(--primary);
 }
 
-.checkbox.checked .check-icon::before {
+.checkbox.checked::before {
   content: "✓";
   color: white;
   font-size: 14px;
