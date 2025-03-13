@@ -429,3 +429,10 @@ li.new-task-display {
         }
     }
 }
+
+.confetti {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}

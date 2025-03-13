@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../../components/navBar";
 import TaskList from "../../components/taskList";
@@ -6,12 +6,22 @@ import Toast from "../../components/Toast";
 import { useNavigate } from "react-router-dom";
 import { Droppable } from 'react-beautiful-dnd';
 import { parse, format, subDays, set } from 'date-fns';
+import Confetti from 'react-confetti';
 import '../../App.css';
 import './style.css';
 
 function Home() {
     const navigate = useNavigate();
-  
+    const [windowDimension, setWindowDimension] = useState({ width: window.innerWidth, height: window.innerHeight });
+    const [showConfetti, setShowConfetti] = useState(false);
+    
+    const [confettiConfig, setConfettiConfig] = useState({
+        x: 0,
+        y: 0,
+        w: window.innerWidth,
+        h: 10
+    });
+    
     const [tasks, setTasks] = useState([]);
     const [taskTitle, setTaskTitle] = useState('');
     const [points, setPoints] = useState(0);
@@ -35,6 +45,9 @@ function Home() {
         message: '',
         type: 'success'
     });
+    
+    // Estado anterior de pontos para rastrear quando todas as tarefas são concluídas
+    const previousPointsRef = useRef(0);
   
     // Estados para controlar a abertura/fechamento das seções
     const [sectionStates, setSectionStates] = useState({
@@ -43,6 +56,24 @@ function Home() {
         afternoon: { isOpen: true, autoCollapse: false, wasManuallyOpened: false },
         night: { isOpen: true, autoCollapse: false, wasManuallyOpened: false }
     });
+    
+    // Atualizar as dimensões da janela quando redimensionada
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            setWindowDimension({ width, height });
+            setConfettiConfig(prev => ({
+                ...prev,
+                w: width
+            }));
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
   
     // Função para mostrar toast
     const showToast = (message, type = 'success') => {
@@ -110,7 +141,7 @@ function Home() {
         localStorage.setItem('darkMode', darkMode);
     }, [darkMode]);
   
-    // Atualiza as tarefas e pontos periodicamente
+    // Atualiza as tarefas e pontos periodicamente e verifica se todas as tarefas pontuáveis foram completadas
     useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date();
@@ -124,12 +155,33 @@ function Home() {
         }, 1000);
   
         // Calcula pontos e tarefas completas
-        if (tasks) {
+        if (tasks && tasks.length > 0) {
             const totalTasks = tasks.filter(task => task.tag !== 'general');
-            setPoints(totalTasks.length * 100);
+            const calculatedPoints = totalTasks.length * 100;
+            setPoints(calculatedPoints);
   
             const totalCompleted = tasks.filter(task => task.completed && task.tag !== 'general');
-            setCurrentPoints(totalCompleted.length * 100);
+            const calculatedCurrentPoints = totalCompleted.length * 100;
+            setCurrentPoints(calculatedCurrentPoints);
+            
+            // Verificar se todas as tarefas que pontuam foram completadas
+            if (calculatedPoints > 0 && calculatedCurrentPoints === calculatedPoints && calculatedCurrentPoints > 0) {
+                // Verificar se acabamos de alcançar 100% (para não disparar o confete várias vezes)
+                if (previousPointsRef.current !== calculatedCurrentPoints) {
+                    setShowConfetti(true);
+                    showToast('Parabéns! Você completou todas as tarefas!', 'success');
+                    
+                    // Ocultar o confete após 5 segundos
+                    setTimeout(() => {
+                        setShowConfetti(false);
+                    }, 10000);
+                }
+            } else {
+                setShowConfetti(false);
+            }
+            
+            // Atualizar a referência para o valor atual de pontos
+            previousPointsRef.current = calculatedCurrentPoints;
   
             const totalMorning = tasks.filter(task => task.tag === 'morning');
             const totalMorningCompleted = tasks.filter(task => task.tag === 'morning' && task.completed);
@@ -315,9 +367,28 @@ function Home() {
   
     return (
         <>
+            {showConfetti && 
+                <div className="confetti">
+                    <Confetti
+                        width={windowDimension.width}
+                        height={windowDimension.height}
+                        recycle={false}
+                        numberOfPieces={500}
+                        gravity={0.2}
+                        confettiSource={{
+                            x: confettiConfig.x * windowDimension.width,
+                            y: confettiConfig.y * windowDimension.height,
+                            w: confettiConfig.w,
+                            h: confettiConfig.h
+                        }}
+                        initialVelocityY={10}
+                        tweenDuration={5000}
+                        opacity={0.8}
+                    />
+                </div>
+            }
             <NavBar setTasks={setTasks} />
             <Outlet />
-            {/* Toast notification */}
             <Toast 
                 show={toast.show}
                 message={toast.message}
