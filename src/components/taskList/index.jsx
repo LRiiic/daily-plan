@@ -20,7 +20,7 @@ function TaskList({ tag, tasks, handleNewTask, taskTitle, setTaskTitle, complete
                                     removeTask(task.id);
                                 }}
                             >
-                                <span class="delete-icon"></span>
+                                <span className="delete-icon"></span>
                             </button>
                         </li>
                     </div>

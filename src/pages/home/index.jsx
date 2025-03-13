@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../../components/navBar";
 import TaskList from "../../components/taskList";
+import Toast from "../../components/Toast";
 import { useNavigate } from "react-router-dom";
 import { Droppable } from 'react-beautiful-dnd';
 import { parse, format, subDays, set } from 'date-fns';
 import '../../App.css';
 import './style.css';
+
 function Home() {
     const navigate = useNavigate();
   
@@ -25,7 +27,14 @@ function Home() {
     const [isIOS, setIsIOS] = useState(false);
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [pwaFullScreen, setPwaFullScreen] = useState(null);
-    const [darkMode, setDarkMode] = useState(true); // Estado para controlar o tema
+    const [darkMode, setDarkMode] = useState(true);
+    
+    // Toast state
+    const [toast, setToast] = useState({
+        show: false,
+        message: '',
+        type: 'success'
+    });
   
     // Estados para controlar a abertura/fechamento das seções
     const [sectionStates, setSectionStates] = useState({
@@ -35,6 +44,23 @@ function Home() {
         night: { isOpen: true, autoCollapse: false, wasManuallyOpened: false }
     });
   
+    // Função para mostrar toast
+    const showToast = (message, type = 'success') => {
+        setToast({
+            show: true,
+            message,
+            type
+        });
+    };
+    
+    // Função para fechar toast
+    const closeToast = () => {
+        setToast(prev => ({
+            ...prev,
+            show: false
+        }));
+    };
+    
     // Efeito para verificar se todas as tarefas de uma seção estão concluídas
     useEffect(() => {
         if (tasks && tasks.length > 0) {
@@ -146,6 +172,9 @@ function Home() {
         setTaskTitle('');
         document.querySelector(`#${tag} .new-task-display`).style.display = '';
         
+        // Mostrar toast de confirmação
+        showToast(`Tarefa "${taskTitle}" criada.`, 'success');
+        
         // Quando uma nova tarefa é criada, abre a seção automaticamente
         setSectionStates(prev => ({
             ...prev,
@@ -191,9 +220,16 @@ function Home() {
   
     // Remove uma tarefa
     function removeTask(taskId) {
+        // Encontrar a tarefa para usar o título na mensagem de toast
+        const taskToRemove = tasks.find(t => t.id === taskId);
+        const taskTitle = taskToRemove ? taskToRemove.title : 'Tarefa';
+        
         const updatedTasks = tasks.filter(t => t.id !== taskId);
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         setTasks(updatedTasks);
+        
+        // Mostrar toast de remoção
+        showToast(`Tarefa "${taskTitle}" removida.`, 'error');
     }
   
     // Alterna a exibição de seções de tarefas
@@ -281,6 +317,13 @@ function Home() {
         <>
             <NavBar setTasks={setTasks} />
             <Outlet />
+            {/* Toast notification */}
+            <Toast 
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={closeToast}
+            />
             <div className="home">
                 {/* Botão de instalação do PWA */}
                 <button id="install-button" style={{ display: pwaFullScreen ? 'none' : isIOS || deferredPrompt ? 'flex' : 'none' }}
@@ -354,6 +397,6 @@ function Home() {
             </div>
         </>
     );
-  }
+}
 
 export default Home;
