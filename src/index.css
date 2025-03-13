@@ -219,7 +219,7 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: max-height 0.5s ease, opacity 0.3s ease;
-  max-height: 500px; /* Altura máxima para a animação */
+  max-height: max-content; /* Altura máxima para a animação */
   opacity: 1;
   box-sizing: border-box;
   border: 1px solid rgb(125 125 125 / 10%);
@@ -565,5 +565,141 @@ body {
     min-width: 20px;
     height: 20px;
     margin-right: 10px;
+  }
+}
+
+.checkbox-wrapper-12 {
+  position: relative;
+  margin-right: 6px;
+}
+
+.checkbox-wrapper-12 > svg {
+  position: absolute;
+  top: -130%;
+  left: -170%;
+  width: 110px;
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 * {
+  box-sizing: border-box;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.checkbox-wrapper-12 .cbx {
+  width: 20px;
+  height: 20px;
+  top: calc(100px - 10px);
+  left: calc(100px - 10px);
+}
+
+.checkbox-wrapper-12 .cbx input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #bfbfc0;
+  border-radius: 50%;
+}
+
+.checkbox-wrapper-12 .cbx label {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: trasnlate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 .cbx svg {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  z-index: 1;
+  pointer-events: none;
+  width: 14px;
+  height: 12px;
+}
+
+.checkbox-wrapper-12 .cbx svg path {
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 19;
+  stroke-dashoffset: 19;
+  transition: stroke-dashoffset 0.3s ease;
+  transition-delay: 0.2s;
+}
+
+.checkbox-wrapper-12 .cbx input:checked + label {
+  animation: splash-12 0.6s ease forwards;
+}
+
+.checkbox-wrapper-12 .cbx input:checked + label + svg path {
+  stroke-dashoffset: 0;
+}
+
+@-moz-keyframes splash-12 {
+  40% {
+    background: var(--primary);
+    box-shadow: 0 -15px 0 -7px var(--primary), 13px -7px 0 -7px var(--primary), 13px 7px 0 -7px var(--primary), 0 15px 0 -7px var(--primary), -13px 7px 0 -7px var(--primary), -13px -7px 0 -7px var(--primary);
+  }
+
+  100% {
+    background: var(--primary);
+    box-shadow: 0 -30px 0 -9px transparent, 26px -14px 0 -9px transparent, 26px 14px 0 -9px transparent, 0 30px 0 -9px transparent, -26px 14px 0 -9px transparent, -26px -14px 0 -9px transparent;
+  }
+}
+
+@-webkit-keyframes splash-12 {
+  40% {
+    background: var(--primary);
+    box-shadow: 0 -15px 0 -7px var(--primary), 13px -7px 0 -7px var(--primary), 13px 7px 0 -7px var(--primary), 0 15px 0 -7px var(--primary), -13px 7px 0 -7px var(--primary), -13px -7px 0 -7px var(--primary);
+  }
+
+  100% {
+    background: var(--primary);
+    box-shadow: 0 -30px 0 -9px transparent, 26px -14px 0 -9px transparent, 26px 14px 0 -9px transparent, 0 30px 0 -9px transparent, -26px 14px 0 -9px transparent, -26px -14px 0 -9px transparent;
+  }
+}
+
+@-o-keyframes splash-12 {
+  40% {
+    background: var(--primary);
+    box-shadow: 0 -15px 0 -7px var(--primary), 13px -7px 0 -7px var(--primary), 13px 7px 0 -7px var(--primary), 0 15px 0 -7px var(--primary), -13px 7px 0 -7px var(--primary), -13px -7px 0 -7px var(--primary);
+  }
+
+  100% {
+    background: var(--primary);
+    box-shadow: 0 -30px 0 -9px transparent, 26px -14px 0 -9px transparent, 26px 14px 0 -9px transparent, 0 30px 0 -9px transparent, -26px 14px 0 -9px transparent, -26px -14px 0 -9px transparent;
+  }
+}
+
+@keyframes splash-12 {
+  40% {
+    background: var(--primary);
+    box-shadow: 0 -15px 0 -7px var(--primary), 13px -7px 0 -7px var(--primary), 13px 7px 0 -7px var(--primary), 0 15px 0 -7px var(--primary), -13px 7px 0 -7px var(--primary), -13px -7px 0 -7px var(--primary);
+  }
+
+  100% {
+    background: var(--primary);
+    box-shadow: 0 -30px 0 -9px transparent, 26px -14px 0 -9px transparent, 26px 14px 0 -9px transparent, 0 30px 0 -9px transparent, -26px 14px 0 -9px transparent, -26px -14px 0 -9px transparent;
   }
 }

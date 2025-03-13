@@ -64,7 +64,7 @@
     align-items: flex-start;
     padding: 0;
     overflow-x: hidden;
-    max-height: 500px;
+    max-height: max-content;
     transition: max-height .5s ease-in;
     transform: translate(0) !important;
 

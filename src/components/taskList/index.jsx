@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 
 function TaskList({ tag, tasks, handleNewTask, taskTitle, setTaskTitle, completeTask, removeTask, createTask, keydown }) {
     return (
         <ul className="tasksList">
             {tasks && tasks
-                .filter(task => task.tag === tag) // Filtra tarefas pela tag
+                .filter(task => task.tag === tag)
                 .map(task => (
                     <div className="task" key={task.id}>
                         <li onClick={() => completeTask(task)}>
-                            <span className={task.completed ? 'checkbox checked' : 'checkbox'}></span>
+                            <div className="checkbox-wrapper-12">
+                                <div className="cbx">
+                                    <input 
+                                        type="checkbox" 
+                                        id={`cbx-${task.id}`} 
+                                        checked={task.completed}
+                                        onChange={() => completeTask(task)}
+                                    />
+                                    <label htmlFor={`cbx-${task.id}`}></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            
                             <p className={task.completed ? 'completed' : ''}>
                                 {task.title}
                             </p>
+                            
                             {/* Botão de remover */}
                             <button 
                                 className="remove-task-btn"
                                 onClick={(e) => {
-                                    e.stopPropagation(); // Evita que o clique propague para o li
+                                    e.stopPropagation();
                                     removeTask(task.id);
                                 }}
                             >
@@ -28,7 +43,20 @@ function TaskList({ tag, tasks, handleNewTask, taskTitle, setTaskTitle, complete
 
             {/* Input para nova tarefa */}
             <li className="new-task-display">
-                <span className='checkbox nt'><i></i></span>
+                <div className="checkbox-wrapper-12">
+                    <div className="cbx">
+                        <input 
+                            type="checkbox" 
+                            id="cbx-new-task" 
+                            disabled 
+                        />
+                        <label htmlFor="cbx-new-task"></label>
+                        <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                    </div>
+                </div>
+                
                 <input 
                     type="text"
                     name="new-task-input"
